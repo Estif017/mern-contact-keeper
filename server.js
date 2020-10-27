@@ -6,6 +6,9 @@ const app=express()
 //connect db
 connectDB()
 
+//init midddleware
+app.use(express.json({extended: false}))
+
 app.get('/',(req,res)=>(res.json({"msg": "Wellcome to mongo db"})))
 
 //define routes
