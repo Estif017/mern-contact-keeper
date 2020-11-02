@@ -3,7 +3,7 @@ import {v4 as uuidv4} from 'uuid';
 
 import ContactsContext from './contactsContext'
 import ContactsReducer from './ContactsReducer'
-import{ADD_CONTACT,UPDATE_CONTACT,DELETE_CONTACT,SET_CURRENT,CLEAR_CURRENT,CLEAR_CONTACTS,CLEAR_FILTER,FILTER_CONTACTS}from '../Type'
+import{ADD_CONTACT,UPDATE_CONTACT,DELETE_CONTACT,SET_CURRENT,CLEAR_CURRENT,CLEAR_FILTER,FILTER_CONTACTS}from '../Type'
 
 const ContactsSelector = props => {
     const initialState={

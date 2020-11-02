@@ -4,14 +4,20 @@ import {BrowserRouter as Router} from 'react-router-dom'
 
 import ContactsSelector from './Context/ContactsContext/ContactsSelector'
 import App from './App';
+import AuthSelectors from './Context/AuthContext/AuthSelectors';
+import AlertSelectors from './Context/AlertContext/AlertSelectors';
 
 
 ReactDOM.render(
-  <ContactsSelector>
-    <Router>
-      <App />
-    </Router>
-  </ContactsSelector>,
+  <AuthSelectors>
+    <ContactsSelector>
+      <AlertSelectors>
+        <Router>
+          <App />
+        </Router>
+      </AlertSelectors>
+    </ContactsSelector>
+  </AuthSelectors>,
   document.getElementById('root')
 );
 
