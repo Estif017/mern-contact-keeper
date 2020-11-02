@@ -1,7 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AlertContext from '../../Context/AlertContext/alertContext'
+import AuthContext from '../../Context/AuthContext/authContext'
 
 const Register = () => {
+    const {register,error,clearErrors}=useContext(AuthContext)
     const {setAlert} = useContext(AlertContext)
     const [user,setUser]=useState({
         name:'',
@@ -20,9 +22,15 @@ const Register = () => {
         }else if(password!==confirmPassword){
             setAlert('Password don\'t match','danger')
         }else{
-            console.log('Registered submitt');
+            register({name,email,password})
         }
     }
+    useEffect(() => {
+        if (error === 'User already exists') {
+          setAlert(error, 'danger');
+          clearErrors();
+        }
+      }, [error]);
     return (
         <div className='form-container'>
             <h1>
