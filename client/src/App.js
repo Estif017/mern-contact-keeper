@@ -5,6 +5,7 @@ import './App.css';
 import Login from './Components/Auth/Login';
 import Register from './Components/Auth/Register';
 import NavBar from './Components/NavBar/NavBar';
+import PrivateRoute from './Components/Routing/PrivateRoute';
 import About from './Pages/About/About';
 import Homepage from './Pages/Home/Homepage';
 import setAuthToken from './utils/setAuthToken'
@@ -18,7 +19,7 @@ function App() {
      <NavBar/>
      <div className="container">
        <Switch>
-         <Route exact path='/'><Homepage/></Route>
+         <PrivateRoute exact path='/' component={Homepage}/>
          <Route path='/about'><About/></Route>
          <Route path='/register'><Register/></Route>
          <Route path='/login'><Login/></Route>
