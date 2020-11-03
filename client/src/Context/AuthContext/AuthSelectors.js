@@ -57,7 +57,7 @@ const AuthSelectors = props => {
           });
         }
       };    
-      
+
     //Login user
     const login = async formData => {
         const config = {
@@ -84,6 +84,7 @@ const AuthSelectors = props => {
       };
 
     //Logout
+    const logout = ()=>dispatch({type: LOGOUT})
     //Clear errors
     const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
 
@@ -97,6 +98,7 @@ const AuthSelectors = props => {
             register,
             loadUser,
             login,
+            logout,
             clearErrors
         }}>
             {props.children}
