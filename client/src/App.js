@@ -7,8 +7,12 @@ import Register from './Components/Auth/Register';
 import NavBar from './Components/NavBar/NavBar';
 import About from './Pages/About/About';
 import Homepage from './Pages/Home/Homepage';
+import setAuthToken from './utils/setAuthToken'
 
 function App() {
+  if(localStorage.token){
+    setAuthToken(localStorage.token)
+  }
   return (
     <Fragment>
      <NavBar/>

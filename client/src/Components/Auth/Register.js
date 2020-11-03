@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
+import {useHistory} from 'react-router-dom'
 import AlertContext from '../../Context/AlertContext/alertContext'
 import AuthContext from '../../Context/AuthContext/authContext'
 
+
 const Register = () => {
-    const {register,error,clearErrors}=useContext(AuthContext)
+    const {register,error,clearErrors,isAuthenticated}=useContext(AuthContext)
     const {setAlert} = useContext(AlertContext)
     const [user,setUser]=useState({
         name:'',
@@ -12,6 +14,19 @@ const Register = () => {
         confirmPassword:''
     })
     const {name,email, password, confirmPassword}=user
+    const history=useHistory()
+
+    useEffect(() => {
+        if(isAuthenticated){
+            history.push('/')
+        }
+        if (error === 'User already exists') {
+          setAlert(error, 'danger');
+          clearErrors();
+        }
+        //eslint-disable-next-line
+      }, [error,isAuthenticated,history.push()]);
+
     const onChange=e=>{
         setUser({...user,[e.target.name]:e.target.value})
     }
@@ -25,12 +40,7 @@ const Register = () => {
             register({name,email,password})
         }
     }
-    useEffect(() => {
-        if (error === 'User already exists') {
-          setAlert(error, 'danger');
-          clearErrors();
-        }
-      }, [error]);
+   
     return (
         <div className='form-container'>
             <h1>

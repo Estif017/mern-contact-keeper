@@ -4,38 +4,61 @@ import axios from 'axios'
 import AuthContext from './authContext'
 import {REGISTER_SUCCESS,REGISTER_FAIL,USER_LOADED,AUTH_ERROR,LOGIN_SUCCESS,LOGIN_FAIL,LOGOUT,CLEAR_ERRORS} from '../Type'
 import AuthReducer from './AuthReducer'
+import setAuthToken from '../../utils/setAuthToken'
 
 const AuthSelectors = props => {
     const initialState={
         token:localStorage.getItem('token'),
         isAuthenticated:null,
-        isLoading:true,
+        loading:true,
         user:null,
         error: null
     }
     const [state,dispatch]=useReducer(AuthReducer,initialState)
 
     //Load user
-    //Register user
-    const register=async formData=>{
-        const config = {
-            headers:{
-                'content-type': 'application/json'
-            }
+
+    const loadUser=async ()=>{
+        if(localStorage.token){
+            setAuthToken(localStorage.token)
         }
         try {
-            const res=await axios.post('/api/users',formData,config)
+            const res=await axios.get('/api/auth')
             dispatch({
-                type:REGISTER_SUCCESS,
-                payload: res.data
+                type:USER_LOADED,
+                payload:res.data
             })
         } catch (error) {
             dispatch({
-                type:REGISTER_FAIL,
-                payload:error.response.data.message
+                type:AUTH_ERROR
             })
         }
+        
     }
+
+    //Register user
+    const register = async formData => {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+    
+        try {
+          const res = await axios.post('/api/users', formData, config);
+    
+          dispatch({
+            type: REGISTER_SUCCESS,
+            payload: res.data
+          });
+          loadUser()
+        } catch (err) {
+          dispatch({
+            type: REGISTER_FAIL,
+            payload: err.response.data.msg
+          });
+        }
+      };    
     //Login user
     //Logout
     //Clear errors
@@ -45,10 +68,11 @@ const AuthSelectors = props => {
         <AuthContext.Provider value={{
             token:state.token,
             isAuthenticated:state.isAuthenticated,
-            isLoading: state.isLoading,
+            loading: state.loading,
             user:state.user,
             error:state.error,
             register,
+            loadUser,
             clearErrors
         }}>
             {props.children}
