@@ -17,24 +17,22 @@ const AuthSelectors = props => {
     const [state,dispatch]=useReducer(AuthReducer,initialState)
 
     //Load user
-
-    const loadUser=async ()=>{
-        if(localStorage.token){
-            setAuthToken(localStorage.token)
+    const loadUser = async () => {
+        if (localStorage.token) {
+          setAuthToken(localStorage.token);
         }
+    
         try {
-            const res=await axios.get('/api/auth')
-            dispatch({
-                type:USER_LOADED,
-                payload:res.data
-            })
-        } catch (error) {
-            dispatch({
-                type:AUTH_ERROR
-            })
+          const res = await axios.get('/api/auth');
+    
+          dispatch({
+            type: USER_LOADED,
+            payload: res.data
+          });
+        } catch (err) {
+          dispatch({ type: AUTH_ERROR });
         }
-        
-    }
+      };
 
     //Register user
     const register = async formData => {
@@ -59,7 +57,32 @@ const AuthSelectors = props => {
           });
         }
       };    
+      
     //Login user
+    const login = async formData => {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+    
+        try {
+          const res = await axios.post('/api/auth', formData, config);
+    
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+          });
+    
+          loadUser();
+        } catch (err) {
+          dispatch({
+            type: LOGIN_FAIL,
+            payload: err.response.data.msg
+          });
+        }
+      };
+
     //Logout
     //Clear errors
     const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
@@ -73,6 +96,7 @@ const AuthSelectors = props => {
             error:state.error,
             register,
             loadUser,
+            login,
             clearErrors
         }}>
             {props.children}
